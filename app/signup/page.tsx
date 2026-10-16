@@ -4,6 +4,10 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import { Button } from '@/components/ui/button'
+import { Input, Label } from '@/components/ui/input'
+import { Card, CardContent } from '@/components/ui/card'
+import { Scissors } from 'lucide-react'
 
 export default function SignupPage() {
   const [email, setEmail] = useState('')
@@ -34,57 +38,73 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-      <div className="w-full max-w-md bg-white rounded-lg shadow p-8">
-        <h1 className="text-2xl font-bold mb-6 text-center">Crear cuenta</h1>
-
-        <form onSubmit={handleSignup} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="tu@email.com"
-            />
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
+      <div className="w-full max-w-md">
+        {/* Logo */}
+        <div className="flex flex-col items-center mb-8">
+          <div className="w-14 h-14 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center mb-4 shadow-lg shadow-primary/20">
+            <Scissors className="w-7 h-7" />
           </div>
+          <h1 className="text-2xl font-bold tracking-tight">TurnosPro</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Empieza gratis en 30 segundos
+          </p>
+        </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Contraseña</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={6}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Mínimo 6 caracteres"
-            />
-          </div>
-
-          {error && (
-            <div className="bg-red-50 text-red-700 text-sm p-3 rounded-md">
-              {error}
+        <Card>
+          <CardContent className="pt-6">
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold">Crear cuenta</h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Sin tarjeta de crédito
+              </p>
             </div>
-          )}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 transition"
-          >
-            {loading ? 'Creando cuenta...' : 'Crear cuenta'}
-          </button>
-        </form>
+            <form onSubmit={handleSignup} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  placeholder="tu@email.com"
+                />
+              </div>
 
-        <p className="text-sm text-center mt-6 text-gray-600">
-          ¿Ya tienes cuenta?{' '}
-          <Link href="/login" className="text-blue-600 hover:underline">
-            Inicia sesión
-          </Link>
-        </p>
+              <div className="space-y-2">
+                <Label htmlFor="password">Contraseña</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={6}
+                  placeholder="Mínimo 6 caracteres"
+                />
+              </div>
+
+              {error && (
+                <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-lg border border-destructive/20">
+                  {error}
+                </div>
+              )}
+
+              <Button type="submit" disabled={loading} className="w-full" size="lg">
+                {loading ? 'Creando cuenta...' : 'Crear cuenta gratis'}
+              </Button>
+            </form>
+
+            <p className="text-sm text-center mt-6 text-muted-foreground">
+              ¿Ya tienes cuenta?{' '}
+              <Link href="/login" className="text-primary hover:underline font-medium">
+                Inicia sesión
+              </Link>
+            </p>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { Button } from '@/components/ui/button'
+import { Input, Label } from '@/components/ui/input'
 
 export default function OnboardingForm() {
   const [name, setName] = useState('')
@@ -14,13 +16,12 @@ export default function OnboardingForm() {
   const router = useRouter()
   const supabase = createClient()
 
-  // Genera slug automáticamente desde el nombre
   function handleNameChange(value: string) {
     setName(value)
     const generatedSlug = value
       .toLowerCase()
       .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '') // quita acentos
+      .replace(/[\u0300-\u036f]/g, '')
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '')
     setSlug(generatedSlug)
@@ -63,75 +64,67 @@ export default function OnboardingForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium mb-1">
-          Nombre del negocio *
-        </label>
-        <input
+      <div className="space-y-2">
+        <Label htmlFor="name">Nombre del negocio *</Label>
+        <Input
+          id="name"
           type="text"
           value={name}
           onChange={(e) => handleNameChange(e.target.value)}
           required
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Barbería El Rey"
         />
       </div>
 
-      <div>
-        <label className="block text-sm font-medium mb-1">
-          URL de reservas *
-        </label>
-        <div className="flex items-center">
-          <span className="text-sm text-gray-500 mr-1">/</span>
-          <input
+      <div className="space-y-2">
+        <Label htmlFor="slug">URL de reservas *</Label>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground">/</span>
+          <Input
+            id="slug"
             type="text"
             value={slug}
             onChange={(e) => setSlug(e.target.value)}
             required
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="barberia-el-rey"
           />
         </div>
-        <p className="text-xs text-gray-500 mt-1">
-          Tus clientes reservarán en: /{slug || 'tu-negocio'}
+        <p className="text-xs text-muted-foreground">
+          Tus clientes reservarán en: <span className="font-mono">/{slug || 'tu-negocio'}</span>
         </p>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium mb-1">Teléfono</label>
-        <input
+      <div className="space-y-2">
+        <Label htmlFor="phone">Teléfono</Label>
+        <Input
+          id="phone"
           type="tel"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="+57 300 123 4567"
         />
       </div>
 
-      <div>
-        <label className="block text-sm font-medium mb-1">Dirección</label>
-        <input
+      <div className="space-y-2">
+        <Label htmlFor="address">Dirección</Label>
+        <Input
+          id="address"
           type="text"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Calle 123 #45-67"
         />
       </div>
 
       {error && (
-        <div className="bg-red-50 text-red-700 text-sm p-3 rounded-md">
+        <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-lg border border-destructive/20">
           {error}
         </div>
       )}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 transition"
-      >
+      <Button type="submit" disabled={loading} className="w-full" size="lg">
         {loading ? 'Creando negocio...' : 'Crear negocio'}
-      </button>
+      </Button>
     </form>
   )
 }

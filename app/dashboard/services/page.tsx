@@ -1,9 +1,11 @@
-export const instant = false
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import ServiceForm from './service-form'
 import ServiceList from './service-list'
+import ThemeToggle from '@/components/theme-toggle'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { ArrowLeft } from 'lucide-react'
 
 export default async function ServicesPage() {
   const supabase = await createClient()
@@ -30,38 +32,52 @@ export default async function ServicesPage() {
     .order('created_at', { ascending: true })
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-6">
-          <Link
-            href="/dashboard"
-            className="text-blue-600 hover:underline text-sm"
-          >
-            ← Volver al dashboard
-          </Link>
-        </div>
+    <div className="min-h-screen bg-background">
+      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-10">
+  <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+    <Link
+      href="/dashboard"
+      className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+    >
+      <ArrowLeft className="w-4 h-4" />
+      Volver al dashboard
+    </Link>
+    <ThemeToggle />
+  </div>
+</header>
 
+      <main className="max-w-6xl mx-auto px-6 py-10">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold">Servicios</h1>
-          <p className="text-gray-500 text-sm mt-1">
-            {business.name}
-          </p>
+          <h1 className="text-3xl font-bold tracking-tight">Servicios</h1>
+          <p className="text-muted-foreground mt-1">{business.name}</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold mb-4">Agregar servicio</h2>
-            <ServiceForm businessId={business.id} />
-          </div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Agregar servicio</CardTitle>
+              <CardDescription>
+                Define cortes, precios y duraciones
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ServiceForm businessId={business.id} />
+            </CardContent>
+          </Card>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold mb-4">
-              Tus servicios ({services?.length || 0})
-            </h2>
-            <ServiceList services={services || []} />
-          </div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Tus servicios ({services?.length || 0})</CardTitle>
+              <CardDescription>
+                Los que tus clientes podrán reservar
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ServiceList services={services || []} />
+            </CardContent>
+          </Card>
         </div>
-      </div>
+      </main>
     </div>
   )
 }

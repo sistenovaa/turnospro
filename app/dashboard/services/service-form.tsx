@@ -3,12 +3,14 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { Button } from '@/components/ui/button'
+import { Input, Label } from '@/components/ui/input'
 
 export default function ServiceForm({ businessId }: { businessId: string }) {
   const [name, setName] = useState('')
   const [duration, setDuration] = useState(30)
   const [price, setPrice] = useState(0)
-  const [color, setColor] = useState('#3b82f6')
+  const [color, setColor] = useState('#2563eb')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
@@ -36,83 +38,75 @@ export default function ServiceForm({ businessId }: { businessId: string }) {
     setName('')
     setDuration(30)
     setPrice(0)
-    setColor('#3b82f6')
+    setColor('#2563eb')
     setLoading(false)
     router.refresh()
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium mb-1">
-          Nombre *
-        </label>
-        <input
+      <div className="space-y-2">
+        <Label htmlFor="name">Nombre *</Label>
+        <Input
+          id="name"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Corte clásico"
         />
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <div>
-          <label className="block text-sm font-medium mb-1">
-            Duración (min) *
-          </label>
-          <input
+        <div className="space-y-2">
+          <Label htmlFor="duration">Duración (min) *</Label>
+          <Input
+            id="duration"
             type="number"
             value={duration}
             onChange={(e) => setDuration(Number(e.target.value))}
             required
             min={5}
             step={5}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-1">
-            Precio *
-          </label>
-          <input
+        <div className="space-y-2">
+          <Label htmlFor="price">Precio *</Label>
+          <Input
+            id="price"
             type="number"
             value={price}
             onChange={(e) => setPrice(Number(e.target.value))}
             required
             min={0}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium mb-1">
-          Color (para el calendario)
-        </label>
-        <input
-          type="color"
-          value={color}
-          onChange={(e) => setColor(e.target.value)}
-          className="w-full h-10 border border-gray-300 rounded-md cursor-pointer"
-        />
+      <div className="space-y-2">
+        <Label htmlFor="color">Color (calendario)</Label>
+        <div className="flex items-center gap-3">
+          <input
+            id="color"
+            type="color"
+            value={color}
+            onChange={(e) => setColor(e.target.value)}
+            className="w-12 h-10 border border-input rounded-lg cursor-pointer bg-card"
+          />
+          <span className="text-sm font-mono text-muted-foreground">{color}</span>
+        </div>
       </div>
 
       {error && (
-        <div className="bg-red-50 text-red-700 text-sm p-3 rounded-md">
+        <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-lg border border-destructive/20">
           {error}
         </div>
       )}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 transition"
-      >
+      <Button type="submit" disabled={loading} className="w-full">
         {loading ? 'Agregando...' : 'Agregar servicio'}
-      </button>
+      </Button>
     </form>
   )
 }
