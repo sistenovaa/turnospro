@@ -1,3 +1,4 @@
+export const instant = false
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import { Card, CardContent } from '@/components/ui/card'
