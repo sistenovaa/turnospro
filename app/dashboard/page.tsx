@@ -1,6 +1,8 @@
+export const instant = false
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import LogoutButton from './logout-button'
+import Link from 'next/link'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -57,15 +59,32 @@ export default async function DashboardPage() {
           </dl>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-lg font-semibold mb-2">Próximos pasos 🚀</h2>
-          <ul className="text-gray-600 space-y-1 text-sm">
-            <li>⏳ Agregar servicios (cortes, barba, etc.)</li>
-            <li>⏳ Agregar profesionales</li>
-            <li>⏳ Configurar horarios</li>
-            <li>⏳ Activar página pública de reservas</li>
-          </ul>
-        </div>
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+  <Link
+    href="/dashboard/services"
+    className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition block"
+  >
+    <h3 className="text-lg font-semibold mb-1">✂️ Servicios</h3>
+    <p className="text-gray-500 text-sm">
+      Agrega cortes, barba, cejas y sus precios
+    </p>
+  </Link>
+
+  <div className="bg-white rounded-lg shadow p-6 opacity-50">
+    <h3 className="text-lg font-semibold mb-1">👥 Profesionales</h3>
+    <p className="text-gray-500 text-sm">Próximamente</p>
+  </div>
+
+  <div className="bg-white rounded-lg shadow p-6 opacity-50">
+    <h3 className="text-lg font-semibold mb-1">📅 Horarios</h3>
+    <p className="text-gray-500 text-sm">Próximamente</p>
+  </div>
+
+  <div className="bg-white rounded-lg shadow p-6 opacity-50">
+    <h3 className="text-lg font-semibold mb-1">🔗 Página pública</h3>
+    <p className="text-gray-500 text-sm">Próximamente</p>
+  </div>
+</div>
       </div>
     </div>
   )
