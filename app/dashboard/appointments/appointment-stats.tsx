@@ -29,10 +29,10 @@ export default function AppointmentStats({
     return start > now && a.status !== 'cancelled'
   })
 
-  const todayRevenue = todayAppointments.reduce(
-    (sum, a) => sum + (a.price || 0),
-    0
-  )
+    // 💰 Solo sumar ingresos de turnos COMPLETADOS
+  const todayRevenue = todayAppointments
+    .filter((a) => a.status === 'completed')
+    .reduce((sum, a) => sum + (a.price || 0), 0)
 
   const stats = [
     {
