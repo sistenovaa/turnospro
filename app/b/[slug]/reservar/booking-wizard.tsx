@@ -164,7 +164,12 @@ export default function BookingWizard({
       })
 
     if (appointmentError) {
-      setError('Error al reservar: ' + appointmentError.message)
+      // Capturar el error de doble reserva (UNIQUE constraint)
+      if (appointmentError.code === '23505') {
+        setError('Lo sentimos, ese horario acaba de ser reservado. Elige otro.')
+      } else {
+        setError('Error al reservar: ' + appointmentError.message)
+      }
       setLoading(false)
       return
     }
@@ -382,8 +387,19 @@ export default function BookingWizard({
               </div>
 
               {error && (
-                <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-lg border border-destructive/20">
-                  {error}
+                <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-lg border border-destructive/20 flex items-start justify-between gap-3">
+                  <span className="flex-1">{error}</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setError(null)
+                      setSelectedSlot(null)
+                      setStep(2)
+                    }}
+                    className="text-xs font-medium underline hover:no-underline whitespace-nowrap"
+                  >
+                    Elegir otro horario
+                  </button>
                 </div>
               )}
 
