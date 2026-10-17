@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import LogoutButton from './logout-button'
+import { Button } from '@/components/ui/button'
 import ThemeToggle from '@/components/theme-toggle'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Scissors, Users, Calendar, Link2, ArrowRight, Sparkles } from 'lucide-react'
@@ -27,6 +28,13 @@ export default async function DashboardPage() {
 
   const modules = [
     {
+      icon: Calendar,
+      title: 'Turnos',
+      description: 'Mira y gestiona las reservas de tus clientes',
+      href: '/dashboard/appointments',
+      active: true,
+    },
+    {
       icon: Scissors,
       title: 'Servicios',
       description: 'Agrega cortes, barba, cejas y sus precios',
@@ -37,13 +45,6 @@ export default async function DashboardPage() {
       icon: Users,
       title: 'Profesionales',
       description: 'Gestiona a tu equipo de trabajo',
-      href: '#',
-      active: false,
-    },
-    {
-      icon: Calendar,
-      title: 'Horarios',
-      description: 'Configura cuándo atiende cada uno',
       href: '#',
       active: false,
     },
@@ -134,6 +135,33 @@ export default async function DashboardPage() {
                 <dd className="text-sm">{business.address || '—'}</dd>
               </div>
             </dl>
+          </CardContent>
+        </Card>
+
+                {/* Link público */}
+        <Card className="mb-8 border-primary/20 bg-primary/5">
+          <CardContent className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-11 h-11 rounded-xl bg-primary/15 text-primary flex items-center justify-center flex-shrink-0">
+                <Link2 className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="font-semibold text-sm">Tu página de reservas</p>
+                <p className="text-xs text-muted-foreground font-mono">
+                  /b/{business.slug}
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Link href={`/b/${business.slug}`} target="_blank">
+                <Button variant="outline" size="sm">
+                  Ver página
+                </Button>
+              </Link>
+              <Button size="sm" className="flex-1 sm:flex-initial">
+                Copiar link
+              </Button>
+            </div>
           </CardContent>
         </Card>
 

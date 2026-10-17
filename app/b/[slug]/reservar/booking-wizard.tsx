@@ -128,12 +128,28 @@ export default function BookingWizard({
       customerId = newCustomer.id
     }
 
-    // 2. Crear turno
+    // 2. Calcular fechas
     const startDatetime = selectedSlot.toISOString()
     const endDatetime = new Date(
       selectedSlot.getTime() + selectedService.duration_minutes * 60000
     ).toISOString()
 
+    // 3. Verificar que no exista otro turno en ese horario
+    const { data: existing } = await supabase
+      .from('appointments')
+      .select('id')
+      .eq('business_id', business.id)
+      .eq('start_datetime', startDatetime)
+      .neq('status', 'cancelled')
+      .maybeSingle()
+
+    if (existing) {
+      setError('Lo sentimos, ese horario acaba de ser reservado. Elige otro.')
+      setLoading(false)
+      return
+    }
+
+    // 4. Crear el turno
     const { error: appointmentError } = await supabase
       .from('appointments')
       .insert({
