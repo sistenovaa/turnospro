@@ -131,8 +131,8 @@ export default function AppointmentList({
             ) : (
                 <div className="space-y-3">
                     {filtered.map((appointment) => {
-                       const service = appointment.service
-                       const customer = appointment.customer
+                        const service = appointment.service
+                        const customer = appointment.customer
 
                         return (
                             <Card
@@ -173,10 +173,16 @@ export default function AppointmentList({
                                                         {customer?.name || 'Cliente'}
                                                     </span>
                                                     {customer?.phone && (
-                                                        <span className="flex items-center gap-1.5">
+                                                        <a
+                                                            href={`https://wa.me/${customer.phone.replace(/\D/g, '')}`}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="flex items-center gap-1.5 hover:text-green-600 transition-colors"
+                                                            title="Abrir WhatsApp"
+                                                        >
                                                             <Phone className="w-3.5 h-3.5" />
                                                             {customer.phone}
-                                                        </span>
+                                                        </a>
                                                     )}
                                                     <span className="flex items-center gap-1.5">
                                                         <Clock className="w-3.5 h-3.5" />

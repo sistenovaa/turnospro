@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import LogoutButton from './logout-button'
 import { Button } from '@/components/ui/button'
+import CopyLinkButton from './copy-link-button'
 import ThemeToggle from '@/components/theme-toggle'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Scissors, Users, Calendar, Link2, ArrowRight, Sparkles } from 'lucide-react'
@@ -138,7 +139,7 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
 
-                {/* Link público */}
+        {/* Link público */}
         <Card className="mb-8 border-primary/20 bg-primary/5">
           <CardContent className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-4">
@@ -158,9 +159,7 @@ export default async function DashboardPage() {
                   Ver página
                 </Button>
               </Link>
-              <Button size="sm" className="flex-1 sm:flex-initial">
-                Copiar link
-              </Button>
+              <CopyLinkButton slug={business.slug} />
             </div>
           </CardContent>
         </Card>
