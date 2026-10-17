@@ -169,7 +169,7 @@ export default function Home() {
             Precios simples
           </h2>
           <p className="text-muted-foreground mt-3">
-            Empieza gratis. Sube cuando crezcas.
+            Empieza gratis. Sube cuando crezcas. Precios en pesos colombianos (COP).
           </p>
         </div>
 
@@ -187,7 +187,7 @@ export default function Home() {
           />
           <PricingCard
             name="Pro"
-            price="$15"
+            price="$39.900"
             description="El más popular"
             features={[
               'Hasta 5 profesionales',
@@ -200,7 +200,7 @@ export default function Home() {
           />
           <PricingCard
             name="Business"
-            price="$29"
+            price="$79.900"
             description="Para cadenas"
             features={[
               'Profesionales ilimitados',
@@ -306,7 +306,7 @@ function PricingCard({
         <div className="mt-4 flex items-baseline gap-1">
           <span className="text-4xl font-bold tracking-tight">{price}</span>
           {price !== '$0' && (
-            <span className="text-sm text-muted-foreground">/mes</span>
+            <span className="text-sm text-muted-foreground">COP/mes</span>
           )}
         </div>
 

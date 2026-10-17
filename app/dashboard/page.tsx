@@ -1,4 +1,5 @@
 export const instant = false
+
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
@@ -6,6 +7,7 @@ import LogoutButton from './logout-button'
 import { Button } from '@/components/ui/button'
 import CopyLinkButton from './copy-link-button'
 import ThemeToggle from '@/components/theme-toggle'
+import PlanUsageBar from './plan-usage-bar'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Scissors, Users, Calendar, Link2, ArrowRight, Sparkles } from 'lucide-react'
 
@@ -112,7 +114,7 @@ export default async function DashboardPage() {
                   URL de reservas
                 </dt>
                 <dd className="text-sm font-mono bg-secondary px-2 py-1 rounded inline-block">
-                  /{business.slug}
+                  /b/{business.slug}
                 </dd>
               </div>
               <div>
@@ -136,6 +138,13 @@ export default async function DashboardPage() {
                 <dd className="text-sm">{business.address || '—'}</dd>
               </div>
             </dl>
+
+            {/* Barra de progreso del plan Free */}
+            {business.plan === 'free' && (
+              <div className="mt-4 pt-4 border-t border-border">
+                <PlanUsageBar businessId={business.id} />
+              </div>
+            )}
           </CardContent>
         </Card>
 

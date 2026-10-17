@@ -98,6 +98,34 @@ export default function BookingWizard({
     setLoading(true)
     setError(null)
 
+    // 🛡️ Verificar límite del plan Free (30 turnos/mes)
+    const { data: businessPlan } = await supabase
+      .from('businesses')
+      .select('plan')
+      .eq('id', business.id)
+      .single()
+
+    if (businessPlan?.plan === 'free') {
+      const monthStart = new Date()
+      monthStart.setDate(1)
+      monthStart.setHours(0, 0, 0, 0)
+
+      const { count } = await supabase
+        .from('appointments')
+        .select('*', { count: 'exact', head: true })
+        .eq('business_id', business.id)
+        .gte('start_datetime', monthStart.toISOString())
+        .neq('status', 'cancelled')
+
+      if ((count || 0) >= 30) {
+        setError(
+          'Este negocio alcanzó su límite de reservas mensuales. Contacta directamente para agendar.'
+        )
+        setLoading(false)
+        return
+      }
+    }
+
     // 1. Crear o encontrar cliente
     const { data: existingCustomer } = await supabase
       .from('customers')
